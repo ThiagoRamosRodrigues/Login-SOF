@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOF Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <h2>Cadastro</h2>
+            <label for="cadastro-email">E-mail:</label>
+            <input type="email" id="cadastro-email" class="input-field"><br>
+            <label for="cadastro-senha">Senha:</label>
+            <input type="password" id="cadastro-senha" class="input-field"><br>
+            <button id="btnCadastrar" class="btn">Cadastrar</button>
+        </div>
+        <div class="form-wrapper">
+            <h2>Login</h2>
+            <label for="login-email">E-mail:</label>
+            <input type="email" id="login-email" class="input-field"><br>
+            <label for="login-senha">Senha:</label>
+            <input type="password" id="login-senha" class="input-field"><br>
+            <button id="btnLogin" class="btn">Login</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importe as funções necessárias dos SDKs que você precisa
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        
+        // Sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3xruojPV1pBAgMIOC6XEb6y0y0bnxmbc",
+            authDomain: "login-sof.firebaseapp.com",
+            projectId: "login-sof",
+            storageBucket: "login-sof.appspot.com",
+            messagingSenderId: "144690230608",
+            appId: "1:144690230608:web:2e2fe84ab792c8ac54a855",
+            measurementId: "G-SE7FSBQZ3N"
+        };
+
+        // Inicialize o Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth();
+
+        // Função para fazer login
+        function login() {
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
+
+            signInWithEmailAndPassword(auth, email, senha)
+                .then((userCredential) => {
+                    // Login bem-sucedido
+                    alert("Login bem-sucedido!");
+                    const user = userCredential.user;
+                    
+                    window.location.href = "resultado.html";
+                })
+                .catch((error) => {
+                    // Se ocorrer um erro durante o login
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Falha ao fazer login: " + errorMessage);
+                });
+        }
+
+        // Adiciona um evento de clique ao botão de login
+        document.getElementById('btnLogin').addEventListener('click', login);
+
+        // Função para cadastrar um novo usuário
+        function cadastrar() {
+            const email = document.getElementById('cadastro-email').value;
+            const senha = document.getElementById('cadastro-senha').value;
+
+            createUserWithEmailAndPassword(auth, email, senha)
+                .then((userCredential) => {
+                    // Cadastro bem-sucedido
+                    alert("Usuário cadastrado com sucesso!");
+                    const user = userCredential.user;
+                })
+                .catch((error) => {
+                    // Se ocorrer um erro durante o cadastro
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Falha ao cadastrar usuário: " + errorMessage);
+                });
+        }
+
+        // Adiciona um evento de clique ao botão de cadastro
+        document.getElementById('btnCadastrar').addEventListener('click', cadastrar);
+    </script>
+</body>
+</html>
